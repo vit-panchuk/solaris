@@ -1,4 +1,4 @@
-package ua.panchuk.osmos;
+package ua.panchuk.solaris;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -14,67 +14,63 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-public class GameOverScreen implements Screen {
-
+public class NameEnterScreen implements Screen {
+    private Record record;
     private SpriteBatch spriteBatch = new SpriteBatch();
     private Stage stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), spriteBatch);
-    private Skin skin = new Skin(Gdx.files.internal("skin.json"), new TextureAtlas(Gdx.files.internal("pack.pack")));
-    private Label gameOverLabel = new Label("Game Over :'(", skin);
-    private Label scoreLabel;
-    private TextButton restartButton = new TextButton("Restart", skin);
-    private TextButton leaderBoardButton = new TextButton("Records", skin);
     private Table table = new Table();
-    private float score;
+    private Skin skin = new Skin(Gdx.files.internal("skin.json"), new TextureAtlas(Gdx.files.internal("pack.pack")));
+    private Label nameLabel = new Label("Enter your name", skin);
+    private TextField nameField = new TextField("", skin);
+    private TextButton recordButton = new TextButton("Save", skin);
 
     float w = Gdx.graphics.getWidth();
     float h = Gdx.graphics.getHeight();
 
-    public GameOverScreen(float score) {
-        this.score = score;
-        scoreLabel = new Label("Your score: " + String.format("%.0f", score), skin);
+    public NameEnterScreen(float score) {
+        this.record = new Record("",score);
     }
 
     @Override
     public void show() {
-        gameOverLabel.setFontScale(w*0.004f);
         table.setFillParent(true);
-        table.add(gameOverLabel).colspan(2).padBottom(h*0.05f).row();
-        scoreLabel.setFontScale(w * 0.002f);
-        table.add(scoreLabel).colspan(2).padBottom(h*0.05f).row();
-        restartButton.addListener(new ClickListener() {
+
+        nameLabel.setFontScale(w*0.002f);
+        table.add(nameLabel).padBottom(h*0.05f).row();
+        table.add(nameField).padBottom(h*0.05f).row();
+
+        recordButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
+                record.setAuthor(nameField.getText());
+                Gdx.app.log("record", record.getAuthor());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new LeaderBoardScreen(record));
             }
         });
-        leaderBoardButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new NameEnterScreen(score));
-            }
-        });
-        table.add(restartButton);
-        table.add(leaderBoardButton);
+
+        table.add(recordButton);
         stage.addActor(table);
 
         stage.addListener(new InputListener() {
             @Override
             public boolean keyUp(InputEvent event, int keycode) {
                 if ((keycode == Input.Keys.ESCAPE) || (keycode == Input.Keys.BACK) ){
-                    ((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen());
+                    ((Game)Gdx.app.getApplicationListener()).setScreen(new GameOverScreen(record.getScore()));
                 }
                 return false;
             }
         });
+
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(41f/255f, 128f/255f, 185f/255f, 1);
+        Gdx.gl.glClearColor(46f/255f, 204f/255f, 113f/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();

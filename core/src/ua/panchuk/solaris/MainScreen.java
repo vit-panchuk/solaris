@@ -1,4 +1,4 @@
-package ua.panchuk.osmos;
+package ua.panchuk.solaris;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -28,8 +28,8 @@ public class MainScreen implements Screen {
     private TextButton buttonPlay = new TextButton("Play", skin),
             buttonExit = new TextButton("Exit", skin),
             buttonRecords = new TextButton("Records", skin);
-    private Label soundsLabel = new Label("Sounds", skin);
-    private CheckBox sounds = new CheckBox("", skin);
+    private Label musicLabel = new Label("Music", skin);
+    private CheckBox musicCheckBox = new CheckBox("", skin);
 
     @Override
     public void render(float delta) {
@@ -53,6 +53,9 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() {
+        Settings.load();
+        musicCheckBox.setChecked(Settings.isMusic());
+        toggleMusic();
 
         buttonExit.addListener(new ClickListener(){
             @Override
@@ -76,15 +79,23 @@ public class MainScreen implements Screen {
             }
         });
 
+        musicCheckBox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                toggleMusic();
+                Settings.setMusic(musicCheckBox.isChecked());
+                Settings.save();
+            }
+        });
+
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        table.setDebug(true);
-        table.add(new Image(skin.getDrawable("logo"))).center().size(w*0.3f, w*0.3f/2f).row();
-        table.add(buttonPlay).colspan(2).center().padBottom(20).row();
-        table.add(buttonRecords).colspan(2).center().padBottom(20).row();
-        table.add(soundsLabel).padBottom(20);
-        table.add(sounds).padBottom(20).row();
+        table.add(new Image(skin.getDrawable("logo"))).colspan(2).size(w*0.3f, w*0.3f/2f).row();
+        table.add(buttonPlay).colspan(2).padBottom(20).row();
+        table.add(buttonRecords).colspan(2).padBottom(20).row();
+        table.add(musicLabel).width(table.getWidth()/2).padBottom(20);
+        table.add(musicCheckBox).padBottom(20).row();
         table.add(buttonExit).colspan(2).center().padBottom(20).row();
         table.setFillParent(true);
         stage.addActor(table);
@@ -110,4 +121,11 @@ public class MainScreen implements Screen {
         stage.dispose();
         skin.dispose();
     }
+
+    private void toggleMusic() {
+        if (musicCheckBox.isChecked()) {
+            ((Solaris) Gdx.app.getApplicationListener()).getMusic().play();
+        } else {
+            ((Solaris) Gdx.app.getApplicationListener()).getMusic().pause();
+        }    }
 }

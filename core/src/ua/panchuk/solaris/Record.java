@@ -1,4 +1,4 @@
-package ua.panchuk.osmos;
+package ua.panchuk.solaris;
 
 import java.io.Serializable;
 

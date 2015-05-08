@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/GdxTheme" >
         <activity
-            android:name="ua.panchuk.osmos.android.AndroidLauncher"
+            android:name="ua.panchuk.solaris.android.AndroidLauncher"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">

@@ -1,10 +1,10 @@
-package ua.panchuk.osmos.android;
+package ua.panchuk.solaris.android;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import ua.panchuk.osmos.Solaris;
+import ua.panchuk.solaris.Solaris;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
