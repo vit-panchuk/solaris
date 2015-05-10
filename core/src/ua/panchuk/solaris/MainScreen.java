@@ -30,6 +30,8 @@ public class MainScreen implements Screen {
             buttonRecords = new TextButton("Records", skin);
     private Label musicLabel = new Label("Music", skin);
     private CheckBox musicCheckBox = new CheckBox("", skin);
+    private Label soundsLabel = new Label("Sounds", skin);
+    private CheckBox soundsCheckBox = new CheckBox("", skin);
 
     @Override
     public void render(float delta) {
@@ -55,6 +57,7 @@ public class MainScreen implements Screen {
     public void show() {
         Settings.load();
         musicCheckBox.setChecked(Settings.isMusic());
+        soundsCheckBox.setChecked(Settings.isSounds());
         toggleMusic();
 
         buttonExit.addListener(new ClickListener(){
@@ -88,6 +91,14 @@ public class MainScreen implements Screen {
             }
         });
 
+        soundsCheckBox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Settings.setSounds(soundsCheckBox.isChecked());
+                Settings.save();
+            }
+        });
+
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -96,6 +107,8 @@ public class MainScreen implements Screen {
         table.add(buttonRecords).colspan(2).padBottom(20).row();
         table.add(musicLabel).width(table.getWidth()/2).padBottom(20);
         table.add(musicCheckBox).padBottom(20).row();
+        table.add(soundsLabel).width(table.getWidth()/2).padBottom(20);
+        table.add(soundsCheckBox).padBottom(20).row();
         table.add(buttonExit).colspan(2).center().padBottom(20).row();
         table.setFillParent(true);
         stage.addActor(table);
@@ -127,5 +140,6 @@ public class MainScreen implements Screen {
             ((Solaris) Gdx.app.getApplicationListener()).getMusic().play();
         } else {
             ((Solaris) Gdx.app.getApplicationListener()).getMusic().pause();
-        }    }
+        }
+    }
 }

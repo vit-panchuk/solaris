@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
         for (Actor actor : actors) {
             if ((((Matter) actor).getMass() <= 0) && (((Matter) actor).getMass() <= hero.getMass() * 0.01) && (Vector2.dst(actor.getX(Align.center), actor.getY(Align.center), hero.getX(Align.center), hero.getY(Align.center)) >= hero.getMass() * 50)) {
                 actors.removeValue(actor, true);
-                hero.ateMatterNumber+=10;
+                hero.ateMatterNumber+=8;
                 matterCount--;
                 if (matterCount <= 48 && hero.getMass() > 10) {
                     setMatter(50-matterCount);
@@ -203,8 +203,8 @@ public class GameScreen implements Screen {
     }
 
     private float getRandom(float coord, float mass, float ateMatterNumber) {
-        float max = coord + (20*COMPLEXITY_MODIFIER*ateMatterNumber) * mass;
-        float min = coord - (20*COMPLEXITY_MODIFIER*ateMatterNumber) * mass;
+        float max = coord + (35*COMPLEXITY_MODIFIER*ateMatterNumber) * mass;
+        float min = coord - (35*COMPLEXITY_MODIFIER*ateMatterNumber) * mass;
         float range = (max - min) + 1;
 
         return (float) (Math.random() * range) + min;
@@ -231,17 +231,17 @@ public class GameScreen implements Screen {
             } else {
                 overlap = true;
             }
-        } while(overlap || count < 20);
+        } while(overlap || (count < 20));
         return matter;
     }
 
     private void setMatter(int count) {
         matterCount += count;
         for (int i = 0; i < count/2; i++) {
-            group.addActor(addEnemy((COMPLEXITY_MODIFIER*hero.ateMatterNumber),(COMPLEXITY_MODIFIER*hero.ateMatterNumber)/0.05f));
+            group.addActor(addEnemy((COMPLEXITY_MODIFIER*hero.ateMatterNumber)/0.2f,(COMPLEXITY_MODIFIER*hero.ateMatterNumber)/0.05f));
         }
         for (int i = 0; i < count/2; i++) {
-            group.addActor(addEnemy((COMPLEXITY_MODIFIER*hero.ateMatterNumber)/1.2f,(COMPLEXITY_MODIFIER*hero.ateMatterNumber)));
+            group.addActor(addEnemy((COMPLEXITY_MODIFIER*hero.ateMatterNumber)/0.9f,(COMPLEXITY_MODIFIER*hero.ateMatterNumber)/0.5f));
         }
     }
 }

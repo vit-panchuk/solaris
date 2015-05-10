@@ -6,9 +6,6 @@ import com.badlogic.gdx.audio.Music;
 
 public class Solaris extends Game {
 
-    public static final String TITLE = "Solaris";
-    public static final int WIDTH = 480,HEIGHT = 320; // used later to set window size
-
     public Music getMusic() {
         return music;
     }

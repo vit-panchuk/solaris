@@ -16,8 +16,19 @@ public class Settings implements Serializable {
 
     private static boolean music;
 
+    public static boolean isSounds() {
+        return sounds;
+    }
+
+    public static void setSounds(boolean sounds) {
+        INSTANCE.sounds = sounds;
+    }
+
+    private static boolean sounds;
+
     private Settings() {
         music = true;
+        sounds = true;
     }
 
     public static boolean isMusic() {
